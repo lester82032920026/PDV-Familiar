@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "PDV-Familiar",
+  "short_name": "https://lester82032920026.github.io/PDV-Familiar/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
