@@ -1818,10 +1818,14 @@ function bloqueo(){
    <p><small><a href="#" id="lkf">Restaurar desde un respaldo</a> · <a href="#" id="lko">Olvidé mi contraseña</a></small></p><input type="file" id="lkfile" accept=".json,application/json" hidden></div>`;
   let olvido=false;
   const pinta=()=>{
-    const u=db.usuarios.find(x=>x.id===+$('#lu').value),crear=!u.hash&&u.rol==='admin'&&!db.usuarios.some(x=>x.rol==='admin'&&x.hash);
-    $('#lform').innerHTML=u.hash?`<div class="fld" style="margin-top:10px"><label for="lp">Contraseña</label><input id="lp" type="password" autocomplete="current-password"></div><div class="err" id="lke" role="alert"></div><div class="btns"><button class="btn pri" id="lkb">Entrar</button></div>`
-      :crear?`<p>Es la primera vez. <b>Crea tu contraseña</b> de administrador.</p><div class="fld"><label for="lp">Contraseña nueva</label><input id="lp" type="password" autocomplete="new-password"></div><div class="fld"><label for="lp2">Repítela</label><input id="lp2" type="password" autocomplete="new-password"></div><div class="err" id="lke" role="alert"></div><div class="btns"><button class="btn pri" id="lkb">Crear y entrar</button></div>`
-      :`<p>Todavía no tienes contraseña. <b>Pídele a Papá que te la asigne</b> en «Usuarios».</p>`;
+    const u=db.usuarios.find(x=>x.id===+$('#lu').value);
+    $('#lform').innerHTML=u.hash
+      ?`<div class="fld" style="margin-top:10px"><label for="lp">Contraseña</label><input id="lp" type="password" autocomplete="current-password"></div><div class="err" id="lke" role="alert"></div><div class="btns"><button class="btn pri" id="lkb">Entrar</button></div>`
+      :`<p><b>Primera vez de ${esc(u.nombre)}.</b> Crea tu contraseña (mínimo 4 caracteres). Después podrás cambiarla desde «Mi cuenta».<br><small>Si ya tenías una y la olvidaste, pídele a Papá que te la reasigne desde «Usuarios».</small></p>
+        <div class="fld"><label for="lp">Contraseña nueva</label><input id="lp" type="password" autocomplete="new-password"></div>
+        <div class="fld"><label for="lp2">Repítela</label><input id="lp2" type="password" autocomplete="new-password"></div>
+        <div class="err" id="lke" role="alert"></div>
+        <div class="btns"><button class="btn pri" id="lkb">Crear contraseña y entrar</button></div>`;
     const ok=()=>{
       if(u.hash){if(hashPw($('#lp').value,u.nombre)===u.hash)entrar(u);else{$('#lke').textContent='Contraseña incorrecta.';$('#lp').select()}}
       else{const a=$('#lp').value,b=$('#lp2').value;if(a.length<4)return $('#lke').textContent='Debe tener al menos 4 caracteres.';if(a!==b)return $('#lke').textContent='Las dos contraseñas no coinciden.';u.hash=hashPw(a,u.nombre);save(true);entrar(u)}
